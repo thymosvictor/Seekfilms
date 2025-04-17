@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeekFilms</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+    </nav>
+
+    <header class="header">
+      <h1><br>Saiba mais sobre<br> as suas obras cinematográficas<br>  favoritas
+      </h1>
+      <p>"O cinema não tem fronteiras nem limites. É um fluxo constante de sonho".</p>
+
+  </header>
+
+    <input id="search" type="text" class="input-field" placeholder="Buscar filme">
+    <div id="resultados"></div>
+    
+    <script>
+      document.getElementById("search").addEventListener("input", async function () {
+        const query = this.value;
+    
+        if (query.length >= 3) {
+          try {
+            const response = await fetch(`http://localhost:3000/films?nome=${encodeURIComponent(query)}`);
+            const films = await response.json();
+    
+            console.log(films);
+            mostrarResultados(films);
+    
+          } catch (error) {
+            console.error("Erro ao buscar filme:", error);
+          }
+        }
+      });
+    
+      function mostrarResultados(films) {
+        const container = document.getElementById("resultados");
+        container.innerHTML = "";
+    
+        if (films.length === 0) {
+          container.innerHTML = "<p>Nenhum filme encontrado.</p>";
+          return;
+        }
+    
+        films.forEach(filme => {
+          const div = document.createElement("div");
+          div.innerHTML = `
+            <h3>${filme.nome}</h3>
+            <p><strong>Diretor:</strong> ${filme.diretor}</p>
+            <p>${filme.sinopse}</p>
+            <img src="${filme.imageUrl}" alt="${filme.nome}" width="200"/>
+          `;
+          div.style.marginBottom = "20px";
+          container.appendChild(div);
+        });
+      }
+    </script>    
+
+<section class="Filmes">
+  <div class="titulo">
+      <h2>Indicados ao Oscar 2025</h2>
+  </div>
+  <div class="filmes-container">
+      <!-- Card 1 -->
+      <a href="" class="card">
+          <img src="/img/AEA.jpg" alt="Ainda Estou Aqui">
+          <div class="info">
+              <h3>Ainda Estou Aqui</h3>
+              <p>Genero: Drama</p>
+              <span>Vencedor da categoria "Melhor Filme Internacional" de 2025.</span>
+          </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="" class="card">
+          <img src="./img/cpb.jpg" alt="Campus Party | CPNordeste 2024">
+          <div class="info">
+              <h3>Campus Party | CPNordeste 2024</h3>
+              <p>Arena de Pernambuco, Recife-PE</p>
+              <span>04 a 08 de Set</span>
+          </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="" class="card">
+          <img src="./img/cnr.jpg" alt="Conecta Recife 2025">
+          <div class="info">
+              <h3>Conecta Recife 2025</h3>
+              <p>Mirante do Paço, Recife-PE</p>
+              <span>12 a 13 de Março</span>
+          </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="" class="card">
+          <img src="./img/rec.jpeg" alt="REC'n'Play 2024">
+          <div class="info">
+              <h3>REC'n'Play 2024</h3>
+              <p>Recife Antigo, Recife-PE</p>
+              <span>06 a 09 de Nov</span>
+          </div>
+      </a>
+  </div>
+</section>
+
+   <a href="" class="botao">veja todos os eventos</a>
+
+    <!-- <script  type="module" src="./Back-end/index.js"></script> -->
+</body>
+</html>
