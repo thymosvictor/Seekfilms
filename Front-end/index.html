@@ -1,117 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeekFilms</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeekFilms</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
-    </nav>
-
-    <header class="header">
-      <h1><br>Saiba mais sobre<br> as suas obras cinematográficas<br>  favoritas
-      </h1>
-      <p>"O cinema não tem fronteiras nem limites. É um fluxo constante de sonho".</p>
-
+  <nav class="navbar">
+    <div class="logo">MeuSite</div>
+    <div class="menu-icon">
+      <a href="/menu">
+        <i class="fas fa-bars"></i>
+      </a>
+    </div>
+  </nav>
+  
+  <header class="header">
+    <h1><br>Saiba mais sobre<br> as suas obras cinematográficas<br> favoritas</h1>
+    <p>"O cinema não tem fronteiras nem limites.<br> É um fluxo constante de sonho".</p>
   </header>
 
+  <div class="busca-container">
     <input id="search" type="text" class="input-field" placeholder="Buscar filme">
-    <div id="resultados"></div>
-    
-    <script>
-      document.getElementById("search").addEventListener("input", async function () {
-        const query = this.value;
-    
-        if (query.length >= 3) {
-          try {
-            const response = await fetch(`http://localhost:3000/films?nome=${encodeURIComponent(query)}`);
-            const films = await response.json();
-    
-            console.log(films);
-            mostrarResultados(films);
-    
-          } catch (error) {
-            console.error("Erro ao buscar filme:", error);
-          }
+    <button id="fechar-resultados" class="fechar-btn" style="display: none;">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div id="resultados"></div>
+
+  <!-- Carrossel de filmes -->
+  <div id="carrossel-filmes" class="card-scroll-container">
+    <div class="card">
+      <img src="/img/AEA.jpg" alt="Capa do filme" />
+      <h3>Ainda Estou Aqui</h3>
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const btnFechar = document.getElementById("fechar-resultados");
+    const carrossel = document.getElementById("carrossel-filmes");
+
+    document.getElementById("search").addEventListener("input", async function () {
+      const query = this.value.trim();
+
+      if (query.length >= 3) {
+        try {
+          const response = await fetch(`http://localhost:3000/films?nome=${encodeURIComponent(query)}`);
+          const films = await response.json();
+
+          mostrarResultados(films);
+          btnFechar.style.display = "inline";
+          carrossel.style.display = "none";
+        } catch (error) {
+          console.error("Erro ao buscar filme:", error);
         }
-      });
-    
-      function mostrarResultados(films) {
-        const container = document.getElementById("resultados");
-        container.innerHTML = "";
-    
-        if (films.length === 0) {
-          container.innerHTML = "<p>Nenhum filme encontrado.</p>";
-          return;
-        }
-    
-        films.forEach(filme => {
-          const div = document.createElement("div");
-          div.innerHTML = `
+      } else {
+        document.getElementById("resultados").innerHTML = "";
+        btnFechar.style.display = "none";
+        carrossel.style.display = "flex";
+      }
+    });
+
+    btnFechar.addEventListener("click", () => {
+      document.getElementById("resultados").innerHTML = "";
+      btnFechar.style.display = "none";
+      document.getElementById("search").value = "";
+      carrossel.style.display = "flex";
+    });
+
+    function mostrarResultados(films) {
+      const container = document.getElementById("resultados");
+      container.innerHTML = "";
+
+      if (films.length === 0) {
+        container.innerHTML = "<p>Nenhum filme encontrado.</p>";
+        return;
+      }
+
+      films.forEach(filme => {
+        const div = document.createElement("div");
+        div.classList.add("filme-card");
+        div.innerHTML = `
+          <img src="${filme.imageUrl}" alt="${filme.nome}" class="filme-img"/>
+          <div class="filme-info">
             <h3>${filme.nome}</h3>
             <p><strong>Diretor:</strong> ${filme.diretor}</p>
             <p>${filme.sinopse}</p>
-            <img src="${filme.imageUrl}" alt="${filme.nome}" width="200"/>
-          `;
-          div.style.marginBottom = "20px";
-          container.appendChild(div);
-        });
-      }
-    </script>    
-
-<section class="Filmes">
-  <div class="titulo">
-      <h2>Indicados ao Oscar 2025</h2>
-  </div>
-  <div class="filmes-container">
-      <!-- Card 1 -->
-      <a href="" class="card">
-          <img src="/img/AEA.jpg" alt="Ainda Estou Aqui">
-          <div class="info">
-              <h3>Ainda Estou Aqui</h3>
-              <p>Genero: Drama</p>
-              <span>Vencedor da categoria "Melhor Filme Internacional" de 2025.</span>
           </div>
-      </a>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
 
-      <!-- Card 2 -->
-      <a href="" class="card">
-          <img src="./img/cpb.jpg" alt="Campus Party | CPNordeste 2024">
-          <div class="info">
-              <h3>Campus Party | CPNordeste 2024</h3>
-              <p>Arena de Pernambuco, Recife-PE</p>
-              <span>04 a 08 de Set</span>
-          </div>
-      </a>
-
-      <!-- Card 3 -->
-      <a href="" class="card">
-          <img src="./img/cnr.jpg" alt="Conecta Recife 2025">
-          <div class="info">
-              <h3>Conecta Recife 2025</h3>
-              <p>Mirante do Paço, Recife-PE</p>
-              <span>12 a 13 de Março</span>
-          </div>
-      </a>
-
-      <!-- Card 4 -->
-      <a href="" class="card">
-          <img src="./img/rec.jpeg" alt="REC'n'Play 2024">
-          <div class="info">
-              <h3>REC'n'Play 2024</h3>
-              <p>Recife Antigo, Recife-PE</p>
-              <span>06 a 09 de Nov</span>
-          </div>
-      </a>
-  </div>
-</section>
-
-   <a href="" class="botao">veja todos os eventos</a>
-
-    <!-- <script  type="module" src="./Back-end/index.js"></script> -->
+  <script type="module" src="./Back-end/index.js"></script>
 </body>
 </html>
+

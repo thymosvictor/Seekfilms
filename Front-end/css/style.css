@@ -19,6 +19,28 @@
   transition: background 0.2s;
 }
 
+.fechar-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.fechar-btn:hover {
+  color: red;
+}
+
+.filme-img {
+  width: 150px;
+  border-radius: 8px;
+}
+
+.filme-info h3 {
+  margin-top: 0;
+  color: #333;
+}
+
 #resultados div:hover {
   background-color: #e6f0ff;
   cursor: pointer;
@@ -33,19 +55,40 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #120701;
+  background-color: #fff;
   height: 100%;
 }
+/* Navbar container */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 60px;
+  background-color: #fff;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #1d2a2f;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  max-width: 100%;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
+
+/* Logo */
+.navbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Ícone de menu */
+.menu-icon a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
 
 .header {
   position: relative;
@@ -66,7 +109,6 @@ body {
 .header h1 {
   font-size: 32px;
   font-weight: bold;
-  font-family: "Jura", serif;
   text-transform: uppercase;
   text-align: left;
   color: #fff7ad;
@@ -76,9 +118,11 @@ body {
   font-size: 18px;
   margin-top: 10px;
   font-family: "JetBrains Mono", serif;
-  color: #fff7ad;
+  color: #fff;
   padding-left: 15px;
   text-align: left;
+  position: relative;
+  top: 10px;
 }
 
 .item-image img {
